@@ -1,0 +1,188 @@
+======================================================================
+Fire_Department_Calls_for_Service
+=====================================================================
+ssh wgiron2@*********
+
+Password- ********
+
+wget "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1inFQ6rwWOyJ54KjGDWxEfNe9cyTnqcNF' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1inFQ6rwWOyJ54KjGDWxEfNe9cyTnqcNF" -O Fire_Department_Calls_for_Service .zip && rm -rf /tmp/cookies.txt
+
+
+ls
+
+unzip Fire_Department_Calls_for_Service.zip
+
+
+
+hdfs dfs -mkdir /user/yourUserName/Fire_Department_Calls_for_Service
+hdfs dfs -mkdir /user/ yourUserName/tmp
+hdfs dfs -ls
+hdfs dfs -put Fire_Department_Calls_for_Service.csv /user/ yourUserName/Fire_Department_Calls_for_Service
+hdfs dfs -ls Fire_Department_Calls_for_Service.csv/
+
+
+beeline
+
+create database Fire_Department_Calls_for_Service;
+
+
+
+Use Fire_Department_Calls_for_Service;
+
+
+DROP TABLE IF EXISTS Fire_Department_Calls_for_Service;
+CREATE EXTERNAL TABLE Fire_Department_Calls_for_Service (
+Call_Number STRING,
+Unit_ID STRING,
+Incident_Number STRING,
+Call_Type STRING,
+Call_Date STRING,
+Watch_Date STRING,
+Received_DtTm STRING,
+Entry_DtTm STRING,
+Dispatch_DtTm STRING,
+Response_DtTm STRING,
+On_Scene_DtTm STRING,
+Transport_DtTm STRING,
+Hospital_DtTm STRING,
+ Call_Final_Disposition STRING,
+Available_DtTm STRING,
+Address STRING,
+City STRING,
+Zipcode_of_Incident STRING,
+Battalion STRING,
+Station_Area STRING,
+Box STRING,
+Original_Priority STRING,
+Priority STRING,
+Final_Priority STRING,
+ALS_Unit BOOLEAN,
+Call_Type_Group STRING,
+Number_of_Alarms INT,
+Unit_Type STRING,
+Unit_sequence_in_call_dispatch INT,
+Fire_Prevention_District STRING,
+Supervisor_District STRING,
+Neighborhoods_Analysis_Boundaries STRING,
+RowID STRING,
+case_location STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ","
+LOCATION "/user/username/Fire_Department_Calls_for_Service"
+TBLPROPERTIES ('skip.header.line.count' = '1');
+
+
+SELECT * FROM Fire_Department_Calls_for_Service LIMIT 3;
+
+
+
+
+use Fire_Department_Calls_for_Service;
+
+
+
+CREATE VIEW Fire_Department_Calls_For_Service_reduced  AS SELECT Call_Type, Call_Date, 
+Zipcode_of_Incident, Final_Priority, Call_Type_Group, Fire_Prevention_District, Neighborhoods_Analysis_Boundaries FROM Fire_Department_Calls_for_Service;
+
+
+
+SELECT * FROM Fire_Department_Calls_For_Service_reduced limit 10;
+
+
+
+INSERT OVERWRITE DIRECTORY '/user/wgiron2/tmp/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' SELECT * FROM Fire_Department_Calls_For_Service_reduced;
+
+
+hdfs dfs -ls tmp/
+
+
+hdfs dfs -get /user/wgiron2/tmp/000000_0
+
+ls
+
+du – h 000000_0
+
+
+scp wgiron2@129.153.66.218:/home/wgiron2/000000_0 .
+
+
+
+
+=========================================================================
+Covid19_Testing 
+=========================================================================
+
+
+ssh wgiron2@************
+
+Password- *******
+
+wget "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1yxdLwMSLL8Zx1YXJe1opeYfj_TQUtFFI' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1yxdLwMSLL8Zx1YXJe1opeYfj_TQUtFFI" -O Covid19_Testing.zip && rm -rf /tmp/cookies.txt
+
+
+unzip Covid19_Testing.zip
+
+hdfs dfs -mkdir /user/wgiron2/Covid19_Testing
+
+
+hdfs dfs -mkdir /user/wgiron2/tmp
+
+
+hdfs dfs -ls
+
+
+hdfs dfs -put Covid19_Testing.csv /user/wgiron2/Covid19_Testing
+
+hdfs dfs -ls Covid19_Testing/
+
+
+create database Covid19_Testing;
+
+use Covid19_Testing;
+
+
+
+DROP TABLE IF EXISTS Covid19_Testing;
+CREATE EXTERNAL TABLE Covid19_Testing (
+    specimen_collection_date STRING,
+    area_type STRING,
+    id STRING,
+    acs_population STRING,
+    new_Test STRING,
+    new_positive_tests STRING,
+    new_negative_tests STRING,
+    new_indeterminate_tests STRING,
+    cumulative_tests STRING,
+    cumulative_positive_tests STRING,
+    cumulative_negative_tests STRING,
+    cumulative_indeterminate_tests STRING,
+    cumulative_testing_rate STRING,
+    data_as_of STRING,
+    data_loaded_at STRING
+   
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ","
+LOCATION "/user/wgiron2/Covid19_Testing"
+TBLPROPERTIES ('skip.header.line.count' = '1');
+
+
+SELECT * FROM Covid19_Testing LIMIT 3;
+
+
+CREATE VIEW Covid19_Testing_reduced  AS SELECT id, specimen_collection_date, new_positive_tests, area_type, acs_population FROM Covid19_Testing;
+
+
+SELECT * FROM Covid19_Testing_reduced limit 10;
+
+
+INSERT OVERWRITE DIRECTORY '/user/wgiron2/tmp/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' SELECT * FROM Covid19_Testing_reduced;
+
+
+hdfs dfs -ls tmp/
+hdfs dfs -get /user/wgiron2/tmp/000000_0
+ls
+
+
+scp wgiron2@129.153.66.218:/home/wgiron2/000000_0 .
