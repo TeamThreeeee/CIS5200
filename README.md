@@ -10,6 +10,7 @@ emergency response programs in the San Francisco region.
 ## Core Documents
 PowerPoint Presentation - https://github.com/TeamThreeeee/CIS5200/blob/main/PowerPointProject.pdf
 
+Project Tutorial - https://github.com/TeamThreeeee/CIS5200/blob/main/ProjectTutorial.pdf
 
 
 
