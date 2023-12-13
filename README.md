@@ -8,6 +8,8 @@ correlations between fire department calls and COVID testing data. The goal is t
 emergency response programs in the San Francisco region.
 
 ## Core Documents
+PowerPoint Presentation - https://github.com/TeamThreeeee/CIS5200/blob/main/PowerPointProject.pdf
+
 
 
 
